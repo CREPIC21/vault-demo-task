@@ -20,7 +20,6 @@ const SANDBOX_USERNAME = process.env.SAND_USERNAME;
 const SANDBOX_PASSWORD = process.env.SAND_PASSWORD;
 const VAULT_ID = process.env.VAULTID;
 const CERT_PATH = process.env.NODE_EXTRA_CA_CERTS;
-console.log(SANDBOX_USERNAME);
 
 const certFilePath = CERT_PATH;
 const ca = 'tmp/vgs-outbound-proxy-ca.pem';
@@ -41,19 +40,18 @@ app.set('view engine', 'ejs');
 
 // Body parser - we need to add this middelware so we can use "req.body" to get data from the requests
 app.use(express.json());
-
-// Body parser
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set static folder
 app.use(express.static('public'));
 
+// Route to enter info
 app.get("/", (req, res) => {
     res.render('card');
 });
 
-// Inbound route
+// Inbound VGS route
 app.post("/", async (req, res) => {
     const { cc_name, cc_number, cc_expiration_date, cc_cvc} = req.body;
     async function getData() {
@@ -85,7 +83,7 @@ const newData = await getData().then(response => {
 }); 
 });
 
-// Outbound route
+// Outbound VGS route
 app.post("/redact", async (req, res) => {
     const nameRedacted = req.body.cc_name;
     const numberRedacted = req.body.cc_number;
