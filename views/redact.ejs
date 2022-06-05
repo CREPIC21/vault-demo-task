@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- <h1>Hello</h1>
+    <p>Sent Value: <%= cName.cc_name %> Redacted Value: <%= cName.cardNameRedacted %></p>
+    <p>Sent Value: <%= cNumber.cc_number %> Redacted Value: <%= cNumber.cardNumberRedacted %></p>
+    <p>Sent Value: <%= cDate.cc_expiration_date %> Redacted Value: <%= cDate.dateRedacted %></p>
+    <p>Sent Value: <%= cCVC.cc_cvc %> Redacted Value: <%= cCVC.cvcRedacted %></p> -->
+
+    <form id="cc-form" class='form-container' action="/redact" method="post">
+        <h1>Ching Ching</h1>
+        <div class='form-element'>
+            <!-- <p>Sent Value: <%= cName.cc_name %> -->
+            <label for="cc_name">Name Redacted</label>
+                <input type="text" name="cc_name" class="form-element-redacted" value="<%= cName %>" disabled>
+        </div>
+        <div class='form-element'>
+            <!-- <p>Sent Value: <%= cNumber.cc_number %> -->
+            <label for="cc_number">Card number Redacted</label>
+                <input type="text" name="cc_number" class="form-element-redacted" value="<%= cNumber %>" disabled>
+        </div>
+        <div class='form-element'>
+            <!-- <p>Sent Value: <%= cDate.cc_expiration_date %> -->
+            <label for="cc_expiration_date">Expiration date Redacted</label>
+                <input type="text" name="cc_expiration_date" class="form-element-redacted" value="<%= cDate %>" disabled>
+        </div>
+        <div class='form-element'>
+            <!-- <p>Sent Value: <%= cCVC.cc_cvc %> -->
+              <label for="cc_cvc">CVC Redacted</label>
+                <input type="text" name="cc_cvc" class="form-element-redacted" value="<%= cCVC %>" disabled>
+        </div>
+        <input type='submit' value='Reveal' class='submit-btn'></input>
+        </form>
+</body>
+</html>
