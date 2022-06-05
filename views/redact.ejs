@@ -9,22 +9,26 @@
 </head>
 <body>
     <form id="cc-form" class='form-container' action="/redact" method="post">
-        <h1>Ching Ching</h1>
+        <h1>VGS Task</h1>
         <div class='form-element'>
             <label for="cc_name">Name Redacted</label>
-                <input type="text" name="cc_name" class="form-element-redacted" value="<%= cName %>">
+                <input type="text" class="form-element-redacted" value="<%= cName %>" disabled>
+                <input type="hidden" name="cc_name" class="form-element-redacted" value="<%= cName %>">
         </div>
         <div class='form-element'>
             <label for="cc_number">Card number Redacted</label>
-                <input type="text" name="cc_number" class="form-element-redacted" value="<%= cNumber %>">
+                <input type="text" class="form-element-redacted" value="<%= cNumber %>" disabled>
+                <input type="hidden" name="cc_number" class="form-element-redacted" value="<%= cNumber %>">
         </div>
         <div class='form-element'>
             <label for="cc_expiration_date">Expiration date Redacted</label>
-                <input type="text" name="cc_expiration_date" class="form-element-redacted" value="<%= cDate %>">
+                <input type="text" class="form-element-redacted" value="<%= cDate %>" disabled>
+                <input type="hidden" name="cc_expiration_date" class="form-element-redacted" value="<%= cDate %>">
         </div>
         <div class='form-element'>
               <label for="cc_cvc">CVC Redacted</label>
-                <input type="text" name="cc_cvc" class="form-element-redacted" value="<%= cCVC %>">
+                <input type="text" class="form-element-redacted" value="<%= cCVC %>" disabled>
+                <input type="hidden" name="cc_cvc" class="form-element-redacted" value="<%= cCVC %>">
         </div>
         <input type='submit' value='Reveal' class='submit-btn'></input>
         </form>

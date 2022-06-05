@@ -12,6 +12,7 @@ const tls = require('tls');
 const { curly } = require('node-libcurl');
 const {EOL} = require('os');
 
+// for accessing environment variables
 require("dotenv").config();
 
 const PORT = process.env.PORT || 80;
@@ -86,13 +87,13 @@ const newData = await getData().then(response => {
 
 // Outbound route
 app.post("/redact", async (req, res) => {
-    const nameEncryted = req.body.cc_name;
+    const nameRedacted = req.body.cc_name;
     const numberRedacted = req.body.cc_number;
     const expDateRedacted = req.body.cc_expiration_date;
     const cvcRedacted = req.body.cc_cvc;
     async function run() {
         return await curly.post('https://echo.apps.verygood.systems/post', {
-            postFields: JSON.stringify({ cc_name: nameEncryted, cc_number: numberRedacted, cc_expiration_date: expDateRedacted, cc_cvc: cvcRedacted }),
+            postFields: JSON.stringify({ cc_name: nameRedacted, cc_number: numberRedacted, cc_expiration_date: expDateRedacted, cc_cvc: cvcRedacted }),
             httpHeader: ['Content-type: application/json'],
             caInfo: ca,
             proxy: `https://${SANDBOX_USERNAME}:${SANDBOX_PASSWORD}@${VAULT_ID}.sandbox.verygoodproxy.com:8443`,

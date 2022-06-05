@@ -10,22 +10,22 @@
 <body>
     <div>
         <form id="cc-form" class='form-container' action="/" method="post">
-        <h1>Ching Ching</h1>
+        <h1>VGS Task</h1>
         <div class='form-element'>
             <label for="cc_name">Name</label>
-                <input type="text" name="cc_name">
+                <input type="text" name="cc_name" placeholder="John Doe" required>
         </div>
         <div class='form-element'>
             <label for="cc_number">Card number</label>
-                <input type="text" name="cc_number">
+                <input type="tel" name="cc_number" minlength="18" maxlength="19" placeholder="1111 1111 1111 1111" pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}" required>
         </div>
         <div class='form-element'>
             <label for="cc_expiration_date">Expiration date</label>
-                <input type="text" name="cc_expiration_date">
+                <input type="text" name="cc_expiration_date" placeholder="MM / YY" required>
         </div>
         <div class='form-element'>
               <label for="cc_cvc">CVC</label>
-                <input type="text" name="cc_cvc">
+                <input type="number" name="cc_cvc" minlength="3" maxlength="4" placeholder="343" required>
         </div>
         <input type='submit' value='Redact' class='submit-btn'></input>
         </form>

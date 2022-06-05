@@ -8,6 +8,10 @@
   body {
     background-image: linear-gradient(to right, #4A569D, #DC2424);
   }
+
+  a {
+    text-decoration: none;
+  }
   
   .form-container {
     display: flex;
@@ -52,7 +56,7 @@
     background-color: rgba(255, 255, 255, 0);
   }
   
-  .submit-btn {
+  .submit-btn, .reset {
     width: 60%;
     margin-left: auto;
     margin-right: auto;
@@ -66,11 +70,11 @@
     color: white;
   }
   
-  .submit-btn:hover {
+  .submit-btn:hover, .reset:hover {
     border-color: rgba(255, 255, 255, 0.9);
     background-color: rgba(255, 255, 255, 0);
   }
-  
+   
   /* Remove up/down arrows for input type number */
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -96,7 +100,11 @@
   ::-ms-input-placeholder { /* Microsoft Edge */
     color: white;
   }
-  
+
+  input:focus::placeholder {
+    color: transparent;
+  }
+
   @media (min-width: 800px) {
     .form-container {
       width: 60%;

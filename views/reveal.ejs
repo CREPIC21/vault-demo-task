@@ -9,10 +9,10 @@
 </head>
 <body>
     <form id="cc-form" class='form-container'>
-        <h1>Ching Ching</h1>
+        <h1>VGS Task</h1>
         <div class='form-element'>
             <label for="cc_name">Name Revealed</label>
-                <input type="text" name="cc_name" class="form-element-redacted" value="<%= cName %>">
+                <input type="text" name="cc_name" class="form-element-redacted" value="<%= cName %>" disabled>
         </div>
         <div class='form-element'>
             <label for="cc_number">Card number Revealed</label>
@@ -26,7 +26,8 @@
               <label for="cc_cvc">CVC Revealed</label>
                 <input type="text" name="cc_cvc" class="form-element-redacted" value="<%= cCVC %>" disabled>
         </div>
-        <input type='submit' value='Start Over' class='submit-btn'></input>
+        <!-- <input type='submit' value='Start Over' class='submit-btn'></input> -->
+        <a href="/" class="reset">Start Over</a>
         </form>
 </body>
 </html>
