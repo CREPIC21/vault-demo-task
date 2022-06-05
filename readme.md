@@ -13,6 +13,13 @@ npm run dev
 
 # Run in prod mode
 npm start
+
+```
+
+## Note
+```
+Outbound route will work once the project is deployed online, testing it locally with nginx proxy couldn't get pass the SSL certificate error
+
 ```
 
 Live Example: https://vault-demo-task.herokuapp.com/
