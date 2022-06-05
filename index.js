@@ -86,12 +86,20 @@ const newData = await getData().then(response => {
 }); 
 });
 
+app.get("/redact", (req, res) => {
+    res.render('redact');
+})
+
 app.post("/redact", async (req, res) => {
 
     const nameEncryted = req.body.cc_name;
     const numberRedacted = req.body.cc_number;
     const expDateRedacted = req.body.cc_expiration_date;
     const cvcRedacted = req.body.cc_cvc;
+    console.log(nameEncryted);
+    console.log(numberRedacted);
+    console.log(expDateRedacted);
+    console.log(cvcRedacted);
     async function run() {
         return await curly.post('https://echo.apps.verygood.systems/post', {
             postFields: JSON.stringify({ cc_name: nameEncryted, cc_number: numberRedacted, cc_expiration_date: expDateRedacted, cc_cvc: cvcRedacted }),
@@ -104,7 +112,6 @@ app.post("/redact", async (req, res) => {
     await run()
     .then(({ data, statusCode, headers }) => {
         const recData = JSON.parse(data.data);
-        const { cc_name, cc_number, cc_expiration_date, cc_cvc } = recData;
         console.log(require('util').inspect(
             {
                 data: JSON.parse(data.data),
@@ -116,7 +123,7 @@ app.post("/redact", async (req, res) => {
         ),
     ), 
     // res.send("Hello" + recData.cc_name);
-    res.render('reveal', {cName: cc_name, cNumber: cc_number, cDate: cc_expiration_date, cCVC: cc_cvc})
+    res.render('reveal', {cName: recData.cc_name, cNumber: recData.cc_number, cDate: recData.cc_expiration_date, cCVC: recData.cc_cvc})
    }).catch((error) => console.error(`Something went wrong`, { error }));
      // res.send("hell0");
 });
