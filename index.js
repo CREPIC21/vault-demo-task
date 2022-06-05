@@ -1,25 +1,27 @@
 // server framework for Node.js.
 const express = require('express');
-// loads environment variables from a .env file into process.env. 
-const dotenv = require('dotenv');
 // allows express to read the body and then parse that into a Json object that we can understand
 const bodyParser = require('body-parser');
+// package for providing a Connect/Express middleware that can be used to enable CORS with various options
 const cors = require('cors');
+
+// Required packages for VGS Task
 const fetch = require('node-fetch');
 const fs = require('fs');
 const tls = require('tls');
 const { curly } = require('node-libcurl');
 const {EOL} = require('os');
 
-// Load env variables from config.env file
-// dotenv.config({ path: './config/config.env' });
-
 require("dotenv").config();
 
-// using process.env because we configured env variables in config file
 const PORT = process.env.PORT || 80;
+const SANDBOX_USERNAME = process.env.SAND_USERNAME;
+const SANDBOX_PASSWORD = process.env.SAND_PASSWORD;
+const VAULT_ID = process.env.VAULTID;
+const CERT_PATH = process.env.NODE_EXTRA_CA_CERTS;
+console.log(SANDBOX_USERNAME);
 
-const certFilePath = 'sandbox.pem';
+const certFilePath = CERT_PATH;
 const ca = 'tmp/vgs-outbound-proxy-ca.pem';
 const tlsData = tls.rootCertificates.join(EOL);
 const vgsSelfSigned = fs.readFileSync(certFilePath).toString('utf-8');
@@ -28,7 +30,7 @@ fs.writeFileSync(ca, systemCaAndVgsCa);
 
 // Initialize the app
 const app = express();
-// CORS 
+// enable cors
 app.use(cors({
     origin: "*"
 }))
@@ -37,7 +39,6 @@ app.use(cors({
 app.set('view engine', 'ejs');
 
 // Body parser - we need to add this middelware so we can use "req.body" to get data from the requests
-// It works only if I add JSON.stringify, example: JSON.stringify(req.body)
 app.use(express.json());
 
 // Body parser
@@ -51,14 +52,13 @@ app.get("/", (req, res) => {
     res.render('card');
 });
 
+// Inbound route
 app.post("/", async (req, res) => {
     const { cc_name, cc_number, cc_expiration_date, cc_cvc} = req.body;
     async function getData() {
     let result;
-    
-
   try {
-    result = await fetch('https://tntwbjfwonh.sandbox.verygoodproxy.com/post', {
+    result = await fetch(`https://${VAULT_ID}.sandbox.verygoodproxy.com/post`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -71,7 +71,6 @@ app.post("/", async (req, res) => {
   } catch (e) {
     console.error(e);
   }
-
   return await result.json();
 }
 
@@ -82,30 +81,21 @@ const newData = await getData().then(response => {
     const cvcRedacted = response.json.cc_cvc;
     console.log(cardNameRedacted);
     res.render('redact', {cName: cardNameRedacted, cNumber: cardNumberRedacted, cDate: dateRedacted, cCVC: cvcRedacted});
-    // res.send("Hello");
 }); 
 });
 
-app.get("/redact", (req, res) => {
-    res.render('redact');
-})
-
+// Outbound route
 app.post("/redact", async (req, res) => {
-
     const nameEncryted = req.body.cc_name;
     const numberRedacted = req.body.cc_number;
     const expDateRedacted = req.body.cc_expiration_date;
     const cvcRedacted = req.body.cc_cvc;
-    console.log(nameEncryted);
-    console.log(numberRedacted);
-    console.log(expDateRedacted);
-    console.log(cvcRedacted);
     async function run() {
         return await curly.post('https://echo.apps.verygood.systems/post', {
             postFields: JSON.stringify({ cc_name: nameEncryted, cc_number: numberRedacted, cc_expiration_date: expDateRedacted, cc_cvc: cvcRedacted }),
             httpHeader: ['Content-type: application/json'],
             caInfo: ca,
-            proxy: 'https://USucTBo4LS5ftXpyUVb6uK7d:f10ee200-caa2-4bd7-88c4-9ae4565a6ab7@tntwbjfwonh.sandbox.verygoodproxy.com:8443',
+            proxy: `https://${SANDBOX_USERNAME}:${SANDBOX_PASSWORD}@${VAULT_ID}.sandbox.verygoodproxy.com:8443`,
             verbose: true,
         });
     }
@@ -122,10 +112,8 @@ app.post("/redact", async (req, res) => {
             4,
         ),
     ), 
-    // res.send("Hello" + recData.cc_name);
     res.render('reveal', {cName: recData.cc_name, cNumber: recData.cc_number, cDate: recData.cc_expiration_date, cCVC: recData.cc_cvc})
    }).catch((error) => console.error(`Something went wrong`, { error }));
-     // res.send("hell0");
 });
 
 
